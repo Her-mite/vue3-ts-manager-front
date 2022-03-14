@@ -1,24 +1,13 @@
 # vue3-ts-manager-front
 
-## Project setup
+## 创建项目
 ```
-npm install
+npm install -g @vue/cli
+vue create vue3-ts-manager-front
+npm i babel-eslint -s
+配置tsconfig.json和vue.config.js
 ```
-
-### Compiles and hot-reloads for development
+### 项目启动
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
