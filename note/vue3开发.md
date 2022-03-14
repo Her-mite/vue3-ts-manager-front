@@ -33,3 +33,46 @@ beforeUpdate|	onBeforeUpdate|	组件更新之前执行
 updated|	onUpdated|	组件更新完成之后执行
 beforeDestroy|	onBeforeUnmount|	组件卸载之前执行
 destroyed|	onUnmounted|	组件卸载完成后执行
+
+### refs 响应式API
+它可以用来定义所有类型的数据，包括 Node 节点。
+```js
+// 单类型
+const msg = ref<string>('Hello World!');
+
+// 多类型
+const phoneNumber = ref<number | string>(13800138000);
+
+// 声明对象的格式
+interface Member {
+  id: number,
+  name: string
+};
+
+// 定义一个成员对象
+const userInfo = ref<Member>({
+  id: 1,
+  name: 'Tom'
+});
+
+// 数字数组
+const uids = ref<number[]>([ 1, 2, 3 ]);
+
+// 字符串数组
+const names = ref<string[]>([ 'Tom', 'Petter', 'Andy' ]);
+```
+### reactive 响应式API
+局限性： 只使用于对象，数组
+```js
+// 声明对象的格式
+interface Member {
+  id: number,
+  name: string
+};
+
+// 定义一个成员对象
+const userInfo: Member = reactive({
+  id: 1,
+  name: 'Tom'
+});
+```
