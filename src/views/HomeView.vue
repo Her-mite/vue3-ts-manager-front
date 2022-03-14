@@ -6,13 +6,17 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
 import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import { defineComponent } from "vue";
 
-@Options({
+export default defineComponent({
+  setup() {
+    let ext = "anythin";
+    console.log("anything, setup", ext);
+    return { ext };
+  },
   components: {
     HelloWorld,
   },
-})
-export default class HomeView extends Vue {}
+});
 </script>
