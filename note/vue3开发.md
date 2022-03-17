@@ -76,3 +76,11 @@ const userInfo: Member = reactive({
   name: 'Tom'
 });
 ```
+
+* icon图标全局挂载
+```js
+// 引入elementIcon
+Object.keys(ELIcons).forEach((key) => {
+  app.component(key, ELIcons[key as keyof typeof ELIcons]);
+});
+```

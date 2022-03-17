@@ -10,13 +10,13 @@
 </template>
 
 <script lang="ts">
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-import { defineComponent } from "vue";
+import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   setup() {
-    let ext = "anythin";
-    console.log("anything, setup", ext);
+    let ext = 'anythin';
+    console.log('anything, setup', ext);
     return { ext };
   },
   components: {

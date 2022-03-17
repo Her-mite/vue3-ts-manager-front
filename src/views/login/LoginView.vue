@@ -45,14 +45,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive } from 'vue';
 
 export default defineComponent({
   setup() {
     // 用户登录表单数据
     const loginFormData = reactive({
-      name: "",
-      password: "",
+      name: '',
+      password: '',
     });
 
     // 密码自定义校验方式
@@ -62,7 +62,7 @@ export default defineComponent({
       callback: (arg1?: Error) => void
     ) => {
       if (value.length < 6 || value.length > 20) {
-        callback(new Error("Length should be 6 to 20"));
+        callback(new Error('Length should be 6 to 20'));
       } else {
         callback();
       }
@@ -72,24 +72,24 @@ export default defineComponent({
       name: [
         {
           required: true, // 必输项
-          message: "Please input name",
-          trigger: "blur",
+          message: 'Please input name',
+          trigger: 'blur',
         },
         {
           min: 5, // 长度限制
           max: 10,
-          message: "Length should be 5 to 10",
-          trigger: "blur",
+          message: 'Length should be 5 to 10',
+          trigger: 'blur',
         },
       ],
       password: [
         {
           required: true,
-          message: "Please input password",
-          trigger: "blur",
+          message: 'Please input password',
+          trigger: 'blur',
         },
         // 自定义格式校验
-        { validator: validatePassword, trigger: "blur" },
+        { validator: validatePassword, trigger: 'blur' },
       ],
     });
     return { loginFormData, rules };
