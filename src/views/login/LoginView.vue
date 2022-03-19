@@ -1,9 +1,10 @@
 <template>
   <div class="background-img">
-    <!-- 登录表单 -->
+        <!-- 登录表单 -->
     <div class="ms-login">
       <div class="login-title">后台管理系统</div>
       <el-form
+        ref="formRef"
         label-position="right"
         label-width="100px"
         :rules="rules"
@@ -11,30 +12,33 @@
         style="max-width: 460px"
         hide-required-asterisk
       >
-        <el-form-item prop="name">
-          <el-input v-model="loginFormData.name" placeholder="请输入用户名">
+        <el-form-item prop="username">
+          <el-input v-model="loginFormData.username" placeholder="请输入用户名">
             <template #prepend>
               <el-icon><avatar /></el-icon>
             </template>
           </el-input>
         </el-form-item>
+
         <el-form-item prop="password">
           <el-input
             v-model="loginFormData.password"
             type="password"
             placeholder="请输入密码"
+            @keyup.enter="submitForm(formRef)"
           >
             <template #prepend>
               <el-icon><lock /></el-icon>
             </template>
           </el-input>
         </el-form-item>
+
         <el-form-item>
           <div class="button-item">
-            <el-button type="primary" @click="submitForm(ruleFormRef)"
+            <el-button type="primary" @click="submitForm(formRef)"
               >登录</el-button
             >
-            <el-button class="register-button" @click="resetForm(ruleFormRef)"
+            <el-button class="register-button" @click="registerUser()"
               >注册</el-button
             >
           </div>
@@ -44,57 +48,88 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive } from 'vue';
+<script lang="ts" setup>
+import { reactive, ref } from 'vue';
+import type { FormInstance } from 'element-plus';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+import { validate_password } from '@/utils/index';
+import { loginResult } from '@/utils/interface';
 
-export default defineComponent({
-  setup() {
-    // 用户登录表单数据
-    const loginFormData = reactive({
-      name: '',
-      password: '',
-    });
+const formRef = ref<FormInstance>();
+const router = useRouter();
 
-    // 密码自定义校验方式
-    const validatePassword = (
-      rule: object,
-      value: string,
-      callback: (arg1?: Error) => void
-    ) => {
-      if (value.length < 6 || value.length > 20) {
-        callback(new Error('Length should be 6 to 20'));
-      } else {
-        callback();
-      }
-    };
-    // 表单校验规则
-    const rules = reactive({
-      name: [
-        {
-          required: true, // 必输项
-          message: 'Please input name',
-          trigger: 'blur',
-        },
-        {
-          min: 5, // 长度限制
-          max: 10,
-          message: 'Length should be 5 to 10',
-          trigger: 'blur',
-        },
-      ],
-      password: [
-        {
-          required: true,
-          message: 'Please input password',
-          trigger: 'blur',
-        },
-        // 自定义格式校验
-        { validator: validatePassword, trigger: 'blur' },
-      ],
-    });
-    return { loginFormData, rules };
-  },
+const loginFormData = reactive({
+  username: '',
+  password: '',
 });
+
+// 密码自定义校验方式
+const validatePassword = (
+  rule: object,
+  value: string,
+  callback: (arg1?: Error) => void
+) => {
+  if (value.length < 6 || value.length > 20) {
+    callback(new Error('Length should be 6 to 20'));
+  } else {
+    callback();
+  }
+};
+
+// 表单校验规则
+const rules = reactive({
+  username: [
+    {
+      required: true, // 必输项
+      message: 'Please input name',
+      trigger: 'blur',
+    },
+    {
+      min: 4, // 长度限制
+      max: 10,
+      message: 'Length should be 4 to 10',
+      trigger: 'blur',
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: 'Please input password',
+      trigger: 'blur',
+    },
+    // 自定义格式校验
+    { validator: validatePassword, trigger: 'blur' },
+  ],
+});
+
+// 登录提交
+const submitForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.validate((valid) => {
+    if (valid) {
+      // 校验通过 验证用户密码
+      let loginResult: loginResult = validate_password(
+        loginFormData.username,
+        loginFormData.password
+      );
+      if (loginResult.isLogin) {
+        ElMessage.success('登录成功');
+        localStorage.setItem('ms_username', loginFormData.username);
+        router.push('/home');
+      } else {
+        ElMessage.error(loginResult.errorMessage);
+        formEl.resetFields('password');
+        return;
+      }
+    }
+  });
+};
+
+// 注册
+const registerUser = () => {
+  router.push('/register');
+};
 </script>
 
 <style>
