@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import ElementPlus from 'element-plus';
 import * as ELIcons from '@element-plus/icons-vue';
+import '@/assets/css/base.css';
 
 import 'element-plus/dist/index.css';
 

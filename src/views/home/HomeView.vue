@@ -1,17 +1,23 @@
 <template>
   <div class="home">
+    <!-- 头部 -->
+    <HomeHeader />
+
+    <!-- menu -->
+    <div>siderbar</div>
+    <router-view />
+
     <nav>
-      <router-link to="/">Home</router-link> |
+      <router-link to="/home">Home</router-link> |
       <router-link to="/about">About</router-link>
     </nav>
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <img alt="Vue logo" src="@/assets/logo.png" />
   </div>
 </template>
 
 <script lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import { defineComponent } from 'vue';
+import HomeHeader from './HomeHeader.vue';
 
 export default defineComponent({
   setup() {
@@ -20,7 +26,7 @@ export default defineComponent({
     return { ext };
   },
   components: {
-    HelloWorld,
+    HomeHeader,
   },
 });
 </script>

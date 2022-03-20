@@ -2,7 +2,7 @@
   <div class="background-img">
     <!-- 登录表单 -->
     <div class="ms-login">
-      <div class="login-title">后台管理系统</div>
+      <div class="login-title">秘密花园</div>
       <el-form
         ref="formRef"
         label-position="right"
@@ -55,7 +55,7 @@ import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import { validate_password } from '@/utils/index';
 import { signResult } from '@/utils/interface';
-import { getCookie, setCookie } from '@/utils/cookie';
+import { setCookie } from '@/utils/cookie';
 
 const formRef = ref<FormInstance>();
 const router = useRouter();
@@ -117,10 +117,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       if (loginResult.isSuccess) {
         ElMessage.success('登录成功');
         // sessionStorage.setItem('ms_username', loginFormData.username);
-        setCookie('user_name', loginFormData.username);
-        let res_user = getCookie('user_name');
-        console.log('res_user', res_user);
-        
+        setCookie('user_name', loginFormData.username);        
         router.push('/home');
       } else {
         ElMessage.error(loginResult.errorMessage);

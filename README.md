@@ -30,3 +30,6 @@ npm install 软件名 --registry https://registry.npm.taobao.org
 # 永久更换
 npm config set registry https://registry.npm.taobao.org
 ```
+
+### iconfont
+https://www.iconfont.cn/

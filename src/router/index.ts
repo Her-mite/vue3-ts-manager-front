@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import HomeView from '@/views/home/HomeView.vue';
 import LoginView from '@/views/login/LoginView.vue';
 import RegisterView from '@/views/login/RegisterView.vue';
 import { getCookie } from '@/utils/cookie';
@@ -41,7 +41,7 @@ const router = createRouter({
 
 // 路由跳转前校验
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | ts-vue3-front`;
+  document.title = '秘密花园';
   const user_name = getCookie('user_name');
   
   // 如果没有登录先去登录
@@ -56,6 +56,5 @@ router.beforeEach((to, from, next) => {
       next();
   }
 });
-
 
 export default router;
