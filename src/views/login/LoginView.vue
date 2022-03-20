@@ -1,6 +1,6 @@
 <template>
   <div class="background-img">
-        <!-- 登录表单 -->
+    <!-- 登录表单 -->
     <div class="ms-login">
       <div class="login-title">后台管理系统</div>
       <el-form
@@ -38,7 +38,7 @@
             <el-button type="primary" @click="submitForm(formRef)"
               >登录</el-button
             >
-            <el-button class="register-button" @click="registerUser()"
+            <el-button class="register-button" @click="goRegister()"
               >注册</el-button
             >
           </div>
@@ -54,7 +54,7 @@ import type { FormInstance } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import { validate_password } from '@/utils/index';
-import { loginResult } from '@/utils/interface';
+import { signResult } from '@/utils/interface';
 
 const formRef = ref<FormInstance>();
 const router = useRouter();
@@ -109,11 +109,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate((valid) => {
     if (valid) {
       // 校验通过 验证用户密码
-      let loginResult: loginResult = validate_password(
+      let loginResult: signResult = validate_password(
         loginFormData.username,
         loginFormData.password
       );
-      if (loginResult.isLogin) {
+      if (loginResult.isSuccess) {
         ElMessage.success('登录成功');
         localStorage.setItem('ms_username', loginFormData.username);
         router.push('/home');
@@ -127,7 +127,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 };
 
 // 注册
-const registerUser = () => {
+const goRegister = () => {
   router.push('/register');
 };
 </script>
@@ -167,7 +167,7 @@ const registerUser = () => {
 }
 /* 表单 */
 .el-form--label-right {
-  padding: 20px 40px 0 0;
+  padding: 30px 40px 0 0;
 }
 
 .el-form-item__content {
@@ -192,6 +192,7 @@ const registerUser = () => {
 .ms-login .el-input__inner {
   background: none;
   border: none;
+  color: #fff;
 }
 /* 注册按钮 */
 .register-button {

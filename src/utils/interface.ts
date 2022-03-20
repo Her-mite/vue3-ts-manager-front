@@ -5,7 +5,7 @@ export interface user {
 }
 
 // 登录结果
-export interface loginResult {
-    isLogin: boolean,
-    errorMessage?: string // errorMessage可不存在
+export interface signResult {
+    isSuccess: boolean,
+    errorMessage?: string // errorMessage可选
 }
