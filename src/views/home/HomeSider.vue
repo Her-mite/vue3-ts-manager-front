@@ -6,6 +6,7 @@
       text-color="#bfcbd9"
       active-text-color="#20a0ff"
       default-active="1"
+      :collapse="siderCollapse"
       @open="handleOpen"
       @close="handleClose"
     >
@@ -58,7 +59,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, computed } from 'vue';
+import $store from '@/store/index';
+
 export default defineComponent({
   setup() {
     const siderItems = reactive([
@@ -86,13 +89,20 @@ export default defineComponent({
         ],
       },
     ]);
+    
+    const siderCollapse = computed(() => {      
+      return $store.state.siderCollapse;
+    });
+
     const handleOpen = (key: string, keyPath: string[]) => {
       console.log(key, keyPath);
     };
+
     const handleClose = (key: string, keyPath: string[]) => {
       console.log(key, keyPath);
     };
-    return { siderItems, handleOpen, handleClose };
+
+    return { siderItems,siderCollapse, handleOpen, handleClose };
   },
 });
 </script>
@@ -108,10 +118,14 @@ export default defineComponent({
   height: 100%;
   background: #324157;
 }
+.el-menu-sider {
+  border-right: solid 0px !important;
+}
 .el-menu-sider:not(.el-menu--collapse) {
   width: 220px;
-  border-right: solid 1px;
+  border-right: solid 0px;
 }
+
 .sidebar::-webkit-scrollbar {
   width: 0;
 }

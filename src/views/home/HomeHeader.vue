@@ -10,9 +10,9 @@
       />
       <div class="system-title">秘密花园</div>
 
-      <div class="collapse-btn" @click="collapseChage">
-        <i v-if="collapse" class="iconfont icon-a-AlignFromRight"></i>
-        <i v-else class="iconfont icon-a-AlignFromLeft"></i>
+      <div class="collapse-btn" @click="collapseChange">
+        <i v-if="siderCollapse" class="iconfont icon-a-AlignFromLeft"></i>
+        <i v-else class="iconfont icon-a-AlignFromRight"></i>
       </div>
     </div>
 
@@ -39,14 +39,19 @@
 
 <script lang="ts">
 import { deleteCookie, getCookie } from '@/utils/cookie';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, computed } from 'vue';
+import $store from '@/store/index';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
   setup() {
-    let collapse = ref<boolean>(false);
-    const user_name = getCookie('user_name');
     const router = useRouter();
+
+    const user_name = getCookie('user_name');
+
+    const siderCollapse = computed(() => {
+      return $store.state.siderCollapse;
+    });
 
     // 用户操作栏调用
     const handleCommand = (command: string) => {
@@ -58,7 +63,13 @@ export default defineComponent({
         // TODO 关于我的页面
       }
     };
-    return { collapse, user_name, handleCommand };
+
+    // 设置侧边栏是否收起
+    const collapseChange = () => {
+      $store.dispatch('setSiderCollapse', !$store.state.siderCollapse);
+    };
+
+    return { siderCollapse, user_name, handleCommand, collapseChange };
   },
 
   components: {},
@@ -94,6 +105,7 @@ export default defineComponent({
 
 .collapse-btn {
   line-height: 40px;
+  cursor: pointer;
 }
 
 .user-info {

@@ -84,3 +84,31 @@ Object.keys(ELIcons).forEach((key) => {
   app.component(key, ELIcons[key as keyof typeof ELIcons]);
 });
 ```
+
+### vuex传递数据
+```js
+import { createStore } from 'vuex';
+
+export default createStore({
+  state: {
+    siderCollapse: false, // 侧边栏是否收起， 默认展开
+  },
+  getters: {},
+  mutations: {
+    getSiderCollapse(state, newValue: boolean){
+      state.siderCollapse = newValue;
+    }
+  },
+  actions: {
+    setSiderCollapse(context, newValue: boolean){
+      context.commit('getSiderCollapse', newValue);
+    }
+  },
+  modules: {},
+});
+// 具体页面使用
+import $store from '@/store/index';
+...
+$store.dispatch('setSiderCollapse', !$store.state.siderCollapse);
+
+```
