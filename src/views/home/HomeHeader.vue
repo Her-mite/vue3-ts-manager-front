@@ -17,17 +17,48 @@
     </div>
 
     <!-- 用户信息 -->
-    <div class="user-info">用户信息</div>
+    <div class="user-info">
+      <div class="user-avator">
+        <img src="@/assets/img/user-avatar.jpg" />
+      </div>
+      <!-- 用户下拉菜单 -->
+      <el-dropdown @command="handleCommand">
+        <span class="el-dropdown-link">
+          {{ user_name }}
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            <el-dropdown-item command="aboutMe">我的</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+import { deleteCookie, getCookie } from '@/utils/cookie';
 import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   setup() {
     let collapse = ref<boolean>(false);
-    return { collapse };
+    const user_name = getCookie('user_name');
+    const router = useRouter();
+
+    // 用户操作栏调用
+    const handleCommand = (command: string) => {
+      if (command === 'logout') {
+        // 删除cookie， 返回首页
+        deleteCookie('user_name');
+        router.push('/login');
+      } else {
+        // TODO 关于我的页面
+      }
+    };
+    return { collapse, user_name, handleCommand };
   },
 
   components: {},
@@ -38,10 +69,11 @@ export default defineComponent({
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #f56c6c;
+  background: #232f41;
   padding-top: 5px;
   display: flex;
   justify-content: space-between;
+  color: #fff;
 }
 .system-info {
   height: 40px;
@@ -67,5 +99,22 @@ export default defineComponent({
 .user-info {
   line-height: 40px;
   margin-right: 40px;
+  width: 140px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user-avator {
+  margin-left: 20px;
+}
+.user-avator img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.el-dropdown-link {
+  font-size: 18px;
+  color: #fff;
 }
 </style>

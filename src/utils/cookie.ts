@@ -14,3 +14,14 @@ export function getCookie(name: string) {
     }
     return null;
 }
+
+// 删除cookie
+export function deleteCookie(name: string): void {
+    const exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    const cval = getCookie(name);
+    if (cval != null) {
+        // 设置为一个过去的时间
+        document.cookie = name + '=' + cval + ';expires=' + exp.toUTCString();
+    }
+}
