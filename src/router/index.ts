@@ -25,8 +25,20 @@ const routes: Array<RouteRecordRaw> = [
     component: HomeView,
     children: [
       {
+        path: '/overview',
+        name: 'overview',
+        meta: {
+          title:'概览'
+        },
+        component: ()=>
+          import( /* webpackChunkName: "OverviewIndex" */ '../views/overview/OverviewIndex.vue'),
+      },
+      {
         path: '/about',
         name: 'about',
+        meta: {
+          title:'关于'
+        },
         component: () =>
           import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
       },

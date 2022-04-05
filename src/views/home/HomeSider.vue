@@ -5,10 +5,12 @@
       background-color="#324157"
       text-color="#bfcbd9"
       active-text-color="#20a0ff"
-      default-active="1"
+      :default-active="onRoutes"
+      :default-openeds="defaultOpen"
       :collapse="siderCollapse"
       @open="handleOpen"
       @close="handleClose"
+      router
     >
       <template v-for="item in siderItems">
         <!-- 标题的菜单 -->
@@ -60,21 +62,29 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
+import { useRoute } from 'vue-router';
+
 import $store from '@/store/index';
 
 export default defineComponent({
   setup() {
+    // 根据点击侧边栏展示对应路由
+    const route = useRoute();
+    const onRoutes = computed(() => {
+      return route.path;
+    });
+    
     const siderItems = reactive([
-      { icon: 'icon-dayinji-1', index: 'systemIndex', title: '系统首页' },
+      { icon: 'icon-dayinji-1', index: '/overview', title: '概览' },
       {
         icon: 'icon-a-gongzuodiannao',
-        index: 'commonWebsite',
+        index: '/commonWebsite',
         title: '常用网址',
         subs: [
           {
             icon: 'icon-a-gongzuodiannao',
-            index: 'commonWebsite3',
-            title: '开发常用',
+            index: '/about',
+            title: '关于',
           },
           {
             icon: 'el-icon-user',
@@ -89,20 +99,23 @@ export default defineComponent({
         ],
       },
     ]);
-    
-    const siderCollapse = computed(() => {      
+    // 获取侧边栏展示状态
+    const siderCollapse = computed(() => {
       return $store.state.siderCollapse;
     });
 
+    const defaultOpen = reactive(['/commonWebsite']);
+
+    // 侧边栏子菜单展开
     const handleOpen = (key: string, keyPath: string[]) => {
-      console.log(key, keyPath);
+      console.log('open', key, keyPath);
     };
-
+    // 侧边栏子菜单收起
     const handleClose = (key: string, keyPath: string[]) => {
-      console.log(key, keyPath);
+      console.log('close', key, keyPath);
     };
 
-    return { siderItems,siderCollapse, handleOpen, handleClose };
+    return { siderItems, siderCollapse, defaultOpen, onRoutes, handleOpen, handleClose };
   },
 });
 </script>

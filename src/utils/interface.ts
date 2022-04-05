@@ -9,3 +9,11 @@ export interface signResult {
     isSuccess: boolean,
     errorMessage?: string // errorMessage可选
 }
+
+// 导航标签
+declare type RouteRecordName = string | symbol
+export interface tagItem {
+    name: RouteRecordName,
+    title: unknown,
+    path: string,
+}

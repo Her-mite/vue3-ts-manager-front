@@ -3,14 +3,15 @@
     <ul>
       <li
         class="tags-li"
-        v-for="(item, index) in tagsList"
+        v-for="(item, index) in tagList"
+        :class="{'active': isActive(item.path)}"
         :key="index"
       >
         <router-link :to="item.path" class="tags-li-title">{{
           item.title
         }}</router-link>
-        <span class="tags-li-icon" @click="closeTags(index)">
-          <i class="icon-guanbi-1"></i>
+        <span class="tags-li-icon" @click="closeTag(index)">
+          <i class="icon-guanbi-1 tags-li-icon"></i>
           
         </span>
       </li>
@@ -18,17 +19,77 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
+<script lang='ts'>
+import { computed, defineComponent } from 'vue';
+import { useStore } from 'vuex';
+import { onBeforeRouteUpdate,  useRoute, useRouter } from 'vue-router';
+import { tagItem } from '@/utils/interface';
 
 export default defineComponent({
   setup() {
-    const tagsList = [{
-      path:'qweq',
-      index: 'q',
-      title: 'qweqw'
-    }];
-    return {tagsList};
+    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
+    const tagList = computed(()=>{
+      return store.state.tagList;
+    });
+    const isActive = (path: string) => {
+      return path === route.fullPath;
+    };
+    
+
+    // 新增标签
+    const addTagItem = (tagItem: tagItem) => {
+      // 判断当前需要新增标签是否已有
+      const isExist = tagList.value.some((item: tagItem) =>{
+        return item.path === tagItem.path;
+      });
+      if(!isExist && tagItem.title){
+        if(tagList.value.length >= 8){
+          store.commit('removeTagItem', 0);
+        }        
+        store.commit('addTagItem', tagItem);
+      }
+    };
+
+    // 关闭标签 
+    const closeTag = (index: number) => {
+      const removeItem = tagList.value[index];
+      store.commit('removeTagItem', index);
+
+      // 获取元素删除后的最后一个标签
+      const item = tagList.value[index]
+        ? tagList.value[index]
+        : tagList.value[index - 1];
+      if (item) {
+        // 当前标签删除时，路由转发到上一个标签
+        removeItem.path === route.fullPath && router.push(item.path);
+      } else {
+        // 最后一个标签被删除， 返回首页
+        router.push('/home');
+      }
+    };
+
+
+    // 页面首次加载渲染
+    const tagItem = {
+      name: route.name ,
+      title: route.meta.title,
+      path: route.fullPath
+    };
+    addTagItem(tagItem);
+
+    // 路由跳转前执行
+    onBeforeRouteUpdate((to) => {
+      const routeTagItem = {
+        name: to.name ,
+        title: to.meta.title,
+        path: to.fullPath
+      };      
+      addTagItem(routeTagItem);
+    });
+
+    return {tagList, isActive, closeTag};
   },
 });
 </script>
@@ -38,7 +99,7 @@ export default defineComponent({
     position: relative;
     height: 30px;
     overflow: hidden;
-    background: #fff;
+    background: #f0f0f0;
     padding-right: 120px;
     box-shadow: 0 5px 10px #ddd;
 }
@@ -60,7 +121,7 @@ export default defineComponent({
     line-height: 23px;
     border: 1px solid #e9eaec;
     background: #fff;
-    padding: 0 5px 0 12px;
+    padding: 0 0 0 12px;
     vertical-align: middle;
     color: #666;
     -webkit-transition: all 0.3s ease-in;
@@ -74,6 +135,8 @@ export default defineComponent({
 
 .tags-li.active {
     color: #fff;
+    border: 1px solid #409EFF;
+    background-color: #409EFF;
 }
 
 .tags-li-title {
@@ -102,5 +165,8 @@ export default defineComponent({
     background: #fff;
     box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
     z-index: 10;
+}
+.tags-li-icon {
+  font-size: 18px;
 }
 </style>
