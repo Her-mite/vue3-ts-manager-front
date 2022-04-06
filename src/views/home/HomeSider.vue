@@ -82,6 +82,11 @@ export default defineComponent({
         title: '常用网址',
         subs: [
           {
+            icon: 'icon-shuji',
+            index: '/studyWebsite',
+            title: '学习网站',
+          },
+          {
             icon: 'icon-a-gongzuodiannao',
             index: '/about',
             title: '关于',
@@ -128,7 +133,6 @@ export default defineComponent({
   top: 55px;
   bottom: 0;
   overflow-y: scroll;
-  height: 100%;
   background: #324157;
 }
 .el-menu-sider {

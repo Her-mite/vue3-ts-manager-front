@@ -34,6 +34,15 @@ const routes: Array<RouteRecordRaw> = [
           import( /* webpackChunkName: "OverviewIndex" */ '../views/overview/OverviewIndex.vue'),
       },
       {
+        path: '/studyWebsite',
+        name: 'studyWebsite',
+        meta: {
+          title:'学习网站'
+        },
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../views/commonWebsite/StudyWebsite.vue'),
+      },
+      {
         path: '/about',
         name: 'about',
         meta: {
@@ -42,6 +51,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
       },
+      
     ],
   },
 ];

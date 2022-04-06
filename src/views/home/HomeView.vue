@@ -49,8 +49,8 @@ export default defineComponent({
 
 .content {
     width: auto;
-    height: 100%;
     padding: 10px;
     box-sizing: border-box;
+    margin-top: 10px;
 }
 </style>
