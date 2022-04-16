@@ -65,7 +65,7 @@ import { defineComponent, onMounted, reactive, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import NormalTable from '@/components/NormalTable.vue';
-import axios from 'axios';
+import axiosRequest from '@/utils/axiosRequest';
 
 export default defineComponent({
   components: { NormalTable },
@@ -122,7 +122,6 @@ export default defineComponent({
       addWebsiteFormRef.validate((valid, fields) => {
         if (valid) {
           addWebsiteSubmit(addWebsiteForm);
-          console.log('submit!', valid, fields);
         } else {
           console.log('error submit!', fields);
         }
@@ -135,11 +134,17 @@ export default defineComponent({
       const params = {
         tableName: 'WebsiteInfo',
       };
-      const response = await axios.get('/api/info/getWebsiteInfo', {
+      const response = await axiosRequest.get('/api/info/getWebsiteInfo', {
         params: params,
       });
-      if (response.data.data.length > 0) {
-        const websiteTable = response.data.data;
+      // const response = await axiosRequest({
+      //   method: 'get',
+      //   url: '/api/info/getWebsiteInfo',
+      //   params: params,
+      // });
+      
+      if (response.data.length > 0) {
+        const websiteTable = response.data;
         const websiteTableLeftTemp = websiteTable.filter(
           (item: object, index: number) => index % 2 === 0
         );
@@ -156,14 +161,14 @@ export default defineComponent({
 
     // 发送后端交易
     const addWebsiteSubmit = async (addWebsiteForm: object) => {
-      const response = await axios.post('/api/info/insertWebsiteInfo', {
+      const response = await axiosRequest.post('/api/info/insertWebsiteInfo', {
         tableName: 'WebsiteInfo',
         tableValue: addWebsiteForm,
       });
       getWebsiteInfo();
       addVisible.value = false;
       console.log(response.data);
-      if (response.data.status === 200) {
+      if (response.status === 200) {
         ElMessage.success('网址新增成功');
       } else {
         ElMessage.error('网址新增失败');
@@ -172,13 +177,13 @@ export default defineComponent({
 
     // 删除数据
     const handleDelete = async (deleteValue: string) => {
-      const response = await axios.post('/api/info/deleteDBSingleRow', {
+      const response = await axiosRequest.post('/api/info/deleteDBSingleRow', {
         tableName: 'WebsiteInfo',
         deleteCol: 'WebsiteName',
         deleteValue,
       });
 
-      if (response.data.status === 200) {
+      if (response.status === 200) {
         getWebsiteInfo();
         ElMessage.success('数据删除成功');
       } else {
@@ -194,7 +199,7 @@ export default defineComponent({
       addWebsiteForm,
       addWebsiteFormRef,
       addWebsiteCheck,
-      handleDelete
+      handleDelete,
     };
   },
 });

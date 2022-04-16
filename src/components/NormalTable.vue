@@ -13,9 +13,10 @@
           hasChildren: 'hasChildren',
         }"
         border
+        :default-sort="{ prop: 'WebsiteName', order: 'ascending' }"
         style="width: 100%"
       >
-        <el-table-column prop="WebsiteName" label="网站名称" min-width="28%" />
+        <el-table-column prop="WebsiteName" label="网站名称" min-width="32%" sortable />
         <el-table-column prop="WebsiteAddress" label="网站地址">
           <template v-slot="scope">
             <a :href="scope.row.WebsiteAddress" target="_blank">{{

@@ -6,7 +6,7 @@
     <!-- 侧边菜单栏 -->
     <HomeSider />
 
-    <div class="content-box">
+    <div class="content-box" :class="{ 'content-collapse': siderCollapse }">
       <home-tag></home-tag>
       <div class="content">
       <router-view />
@@ -18,14 +18,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import HomeHeader from './HomeHeader.vue';
 import HomeSider from './HomeSider.vue';
 import HomeTag from './HomeTag.vue';
+import $store from '@/store/index';
+
 
 export default defineComponent({
   setup() {
-    return {};
+    const siderCollapse = computed(() => {
+      return $store.state.siderCollapse;
+    });
+ 
+    return {siderCollapse};
   },
   components: {
     HomeHeader,
@@ -45,6 +51,9 @@ export default defineComponent({
     padding-bottom: 30px;
     -webkit-transition: left .3s ease-in-out;
     transition: left .3s ease-in-out;
+}
+.content-collapse {
+    left: 65px;
 }
 
 .content {
