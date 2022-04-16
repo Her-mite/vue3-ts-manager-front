@@ -87,6 +87,16 @@ export default defineComponent({
             title: '学习网站',
           },
           {
+            icon: 'icon-youxi',
+            index: '/entertainmentWebsite',
+            title: '休闲娱乐',
+          },
+          {
+            icon: 'icon-gongju',
+            index: '/utilsWebsite',
+            title: '常用工具',
+          },
+          {
             icon: 'icon-a-gongzuodiannao',
             index: '/about',
             title: '关于',

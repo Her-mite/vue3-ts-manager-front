@@ -110,8 +110,8 @@ export default defineComponent({
 
 .user-info {
   line-height: 40px;
-  margin-right: 40px;
-  width: 140px;
+  margin-right: 30px;
+  width: 120px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -121,12 +121,14 @@ export default defineComponent({
 }
 .user-avator img {
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
 }
 .el-dropdown-link {
   font-size: 18px;
   color: #fff;
+  cursor: pointer;
+
 }
 </style>

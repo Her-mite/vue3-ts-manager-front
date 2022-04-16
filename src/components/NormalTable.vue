@@ -24,12 +24,14 @@
             }}</a>
           </template>
         </el-table-column>
-        <el-table-column
+        <template v-if="needRemarks">
+          <el-table-column
           prop="Remarks"
           label="备注"
           min-width="35%"
           show-overflow-tooltip
         />
+        </template>
         <el-table-column label="操作" min-width="24%">
           <template #default="scope">
             <el-popconfirm 
@@ -53,7 +55,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  props: ['tableData'],
+  props: ['tableData', 'needRemarks'],
   setup(props, context) {
     const notifyFather = (row) => {
       console.log(row.WebsiteName);

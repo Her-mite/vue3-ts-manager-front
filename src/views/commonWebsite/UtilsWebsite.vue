@@ -8,10 +8,9 @@ import WebsiteComponent from './WebsiteComponent';
 export default defineComponent({
 
   setup(){
-    const websiteType = 'Study';
-    const websiteName = '学习网站';
-        const needRemarks = true;
-
+    const websiteType = 'Utils';
+    const websiteName = '常用工具';
+    const needRemarks = false;
 
     return {websiteType, websiteName, needRemarks};
   },

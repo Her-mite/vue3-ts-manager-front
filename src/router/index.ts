@@ -43,6 +43,24 @@ const routes: Array<RouteRecordRaw> = [
           import(/* webpackChunkName: "about" */ '../views/commonWebsite/StudyWebsite.vue'),
       },
       {
+        path: '/entertainmentWebsite',
+        name: 'entertainmentWebsite',
+        meta: {
+          title:'休闲娱乐'
+        },
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../views/commonWebsite/EntertainmentWebsite.vue'),
+      },
+      {
+        path: '/utilsWebsite',
+        name: 'utilsWebsite',
+        meta: {
+          title:'常用工具'
+        },
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../views/commonWebsite/UtilsWebsite.vue'),
+      },
+      {
         path: '/about',
         name: 'about',
         meta: {
