@@ -35,23 +35,37 @@
           >
         </el-breadcrumb>
       </div>
-
+      <!-- 上传组件 -->
       <el-button
         class="addButton"
-        type="primary"
+        type="default"
         size="small"
         @click="addVisible = true"
-        >上传文件<el-icon><upload-filled /></el-icon
-      ></el-button>
+        >创建文件夹</el-button
+      >
+      <el-upload
+        class="upload-object"
+        action="upload"
+        :limit="1"
+        :http-request="uploadServiceFile"
+        :on-change="fileChange"
+        :headers="headers"
+        :file-list="fileList"
+      >
+        <el-button class="addButton" type="primary" size="small"
+          >上传文件<el-icon><upload-filled /></el-icon
+        ></el-button>
+      </el-upload>
     </div>
+
     <!-- 对象存储数据表格 -->
     <div>
       <el-table
         :data="tableData"
-        height="570"
+        height="550"
         style="width: 100%"
         class="data-table"
-        border
+        :row-class-name="tableRowClassName"
       >
         <el-table-column prop="name" label="文件名" min-width="40%">
           <template v-slot="scope">
@@ -99,20 +113,49 @@
         </el-table-column>
       </el-table>
     </div>
+    <el-dialog title="新增文件夹" v-model="addVisible" width="30%">
+      <el-input v-model="folderName" placeholder="请输入文件夹名" />
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="addVisible = false">取 消</el-button>
+          <el-button type="primary" @click="createFolder()">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import axiosRequest from '@/utils/axiosRequest';
 import { ElMessage } from 'element-plus';
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 export default defineComponent({
   setup() {
     const bucketName = ref('software');
+    const folderName = ref('');
+    const addVisible = ref(false);
 
     const prefixArray = reactive([]);
     const bucketNameOptions = reactive([]);
     const tableData = reactive([]);
+    const fileList = reactive([]);
+    // 跨域访问请求头
+    const headers = {
+      authorization: 'authorization-text',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    onMounted(() => {
+      getBucketName();
+      getObjectList();
+    });
+
+    const tableRowClassName = ({ row }) => {
+      if (row.name.indexOf('/') === -1) {
+        return '';
+      }
+      return 'success-row';
+    };
 
     // 修改请求桶信息
     const changeBucket = async (value) => {
@@ -189,17 +232,84 @@ export default defineComponent({
       }
     };
 
-    getBucketName();
-    getObjectList();
+    // 上传文件后添加到缓存
+    const fileChange = (file) => {
+      fileList.push(file.raw);
+    };
+
+    // 请求到后端接口,上传对应项目代码
+    const uploadServiceFile = async (val) => {
+      const form = new FormData();
+      const newFilePath = prefixArray.join('/') + '/';
+
+      form.append('file', val.file);
+      form.append('bucketName', bucketName.value);
+      form.append('uploadFileName', newFilePath + val.file.name);
+      form.append('localFileName', './uploads/' + val.file.name);
+
+      const response = await axiosRequest.post('/api/minio/uploadObject', form);
+      if (response.status !== 200) {
+        console.log(response);
+        ElMessage.error('上传失败');
+        fileList.length = 0;
+        return;
+      }
+      ElMessage.success('上传成功');
+      fileList.length = 0;
+      getObjectList();
+    };
+
+    // 创建文件夹
+    const createFolder = async () => {
+      const newFilePath = prefixArray.join('/') + '/' + folderName.value + '/';
+
+      const response = await axiosRequest.post('/api/minio/uploadObject', {
+        fileName: newFilePath,
+      });
+      if (response.status !== 200) {
+        console.log(response);
+        ElMessage.error('文件夹创建失败');
+        return;
+      }
+      ElMessage.success('文件夹创建成功');
+      getObjectList();
+    };
+
+    // 删除对象
+    const removeObject = async (fileName) => {
+      console.log('fileName', fileName);
+      const response = await axiosRequest.post('/api/minio/removeObject', {
+        bucketName: bucketName.value,
+        remoteFileName: prefixArray.join('/') + '/' + fileName,
+      });
+      console.log(response);
+      if (response.status !== 200) {
+        console.log(response);
+        ElMessage.error('删除对象失败');
+        return;
+      }
+      ElMessage.success('删除对象成功');
+      getObjectList();
+    };
 
     return {
       bucketNameOptions,
       bucketName,
+      folderName,
       prefixArray,
       tableData,
+      headers,
+      fileList,
+      addVisible,
+
       changeBucket,
       getObjectList,
       chooseFile,
+      fileChange,
+      uploadServiceFile,
+      createFolder,
+      removeObject,
+      tableRowClassName,
     };
   },
 });
@@ -240,7 +350,7 @@ export default defineComponent({
   margin-top: 15px;
 }
 
-.file-name-item{
+.file-name-item {
   display: flex;
   justify-content: flex-start;
   align-content: center;
@@ -249,5 +359,11 @@ export default defineComponent({
   cursor: pointer;
   margin-left: 10px;
   color: black;
+}
+:deep .el-table .warning-row {
+  --el-table-tr-bg-color: var(--el-color-warning-light-9);
+}
+:deep .el-table .success-row {
+  --el-table-tr-bg-color: var(--el-color-success-light-9);
 }
 </style>
