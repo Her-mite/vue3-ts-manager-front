@@ -27,13 +27,15 @@ axiosRequest.interceptors.request.use(
 axiosRequest.interceptors.response.use(
   response => {
     // console.log('响应拦截器', response)
-    if (response.data.status === 200 ) {      
+    if (response.status === 200 ) {      
       return response.data;
     } else if (response.data.message){
       ElMessage.error('请求失败:', response.data.message);
     } 
     else {
       // 抛出错误
+      console.log(response);
+      
       ElMessage.error('请求失败');
     }
   },

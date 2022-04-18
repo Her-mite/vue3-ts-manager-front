@@ -73,7 +73,7 @@ export default defineComponent({
     const onRoutes = computed(() => {
       return route.path;
     });
-    
+
     const siderItems = reactive([
       { icon: 'icon-dayinji-1', index: '/overview', title: '概览' },
       {
@@ -96,23 +96,10 @@ export default defineComponent({
             index: '/utilsWebsite',
             title: '常用工具',
           },
-          {
-            icon: 'icon-a-gongzuodiannao',
-            index: '/about',
-            title: '关于',
-          },
-          {
-            icon: 'el-icon-user',
-            index: 'testEnv',
-            title: '测试环境',
-          },
-          {
-            icon: 'el-icon-s-help',
-            index: 'Maintenance',
-            title: '运维相关',
-          },
         ],
       },
+      { icon: 'icon-liebiao-2', index: '/markdownShow', title: '文档展示' },
+      { icon: 'icon-shuju', index: '/minioView', title: '对象存储' },
     ]);
     // 获取侧边栏展示状态
     const siderCollapse = computed(() => {
@@ -130,7 +117,14 @@ export default defineComponent({
       console.log('close', key, keyPath);
     };
 
-    return { siderItems, siderCollapse, defaultOpen, onRoutes, handleOpen, handleClose };
+    return {
+      siderItems,
+      siderCollapse,
+      defaultOpen,
+      onRoutes,
+      handleOpen,
+      handleClose,
+    };
   },
 });
 </script>

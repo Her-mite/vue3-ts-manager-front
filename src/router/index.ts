@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
           title:'学习网站'
         },
         component: () =>
-          import(/* webpackChunkName: "about" */ '../views/commonWebsite/StudyWebsite.vue'),
+          import(/* webpackChunkName: "StudyWebsite" */ '../views/commonWebsite/StudyWebsite.vue'),
       },
       {
         path: '/entertainmentWebsite',
@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
           title:'休闲娱乐'
         },
         component: () =>
-          import(/* webpackChunkName: "about" */ '../views/commonWebsite/EntertainmentWebsite.vue'),
+          import(/* webpackChunkName: "EntertainmentWebsite" */ '../views/commonWebsite/EntertainmentWebsite.vue'),
       },
       {
         path: '/utilsWebsite',
@@ -58,18 +58,26 @@ const routes: Array<RouteRecordRaw> = [
           title:'常用工具'
         },
         component: () =>
-          import(/* webpackChunkName: "about" */ '../views/commonWebsite/UtilsWebsite.vue'),
+          import(/* webpackChunkName: "UtilsWebsite" */ '../views/commonWebsite/UtilsWebsite.vue'),
       },
       {
-        path: '/about',
-        name: 'about',
+        path: '/markdownShow',
+        name: 'markdownShow',
         meta: {
-          title:'关于'
+          title:'文档展示'
         },
         component: () =>
-          import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+          import(/* webpackChunkName: "markdownShow" */ '../views/markdownShow/MarkdownShow.vue'),
       },
-      
+      {
+        path: '/minioView',
+        name: 'minioView',
+        meta: {
+          title:'对象存储'
+        },
+        component: () =>
+          import(/* webpackChunkName: "minioView" */ '../views/minioView/MinioView.vue'),
+      },
     ],
   },
 ];

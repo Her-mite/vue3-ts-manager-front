@@ -43,14 +43,14 @@ export default defineComponent({
 
 <style>
 .content-box {
-    position: absolute;
-    left: 220px;
-    right: 0;
-    top: 55px;
-    bottom: 0;
-    padding-bottom: 30px;
-    -webkit-transition: left .3s ease-in-out;
-    transition: left .3s ease-in-out;
+  position: absolute;
+  left: 220px;
+  right: 0;
+  top: 55px;
+  bottom: 0;
+  padding-bottom: 30px;
+  -webkit-transition: left .3s ease-in-out;
+  transition: left .3s ease-in-out;
 }
 .content-collapse {
     left: 65px;
