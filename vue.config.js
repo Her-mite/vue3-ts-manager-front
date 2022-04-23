@@ -15,16 +15,17 @@ module.exports = defineConfig({
   // },
 
   devServer: {
-    host: 'localhost',
-    port: 8080,
+    host: '0.0.0.0',
+    port: 8081,
     proxy: {
       '/api': {
-        target: 'http://localhost:7001',
+        target: 'http://localhost:7071',
         changeOrigin: true,
+        ws: false
       },
     },
-    client: {
-      webSocketURL: 'ws://0.0.0.0:8080/ws',
-    },
+    // client: {
+    //   webSocketURL: 'ws://0.0.0.0:8081/ws',
+    // },
   },
 });

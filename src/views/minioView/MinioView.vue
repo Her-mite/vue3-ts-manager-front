@@ -360,10 +360,10 @@ export default defineComponent({
   margin-left: 10px;
   color: black;
 }
-:deep .el-table .warning-row {
+:deep(.el-table .warning-row) {
   --el-table-tr-bg-color: var(--el-color-warning-light-9);
 }
-:deep .el-table .success-row {
+:deep(.el-table .success-row ){
   --el-table-tr-bg-color: var(--el-color-success-light-9);
 }
 </style>
