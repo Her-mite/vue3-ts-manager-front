@@ -66,6 +66,7 @@
         style="width: 100%"
         class="data-table"
         :row-class-name="tableRowClassName"
+        v-loading="loading"
       >
         <el-table-column prop="name" label="文件名" min-width="40%">
           <template v-slot="scope">
@@ -133,7 +134,8 @@ export default defineComponent({
   setup() {
     const bucketName = ref('software');
     const folderName = ref('');
-    const addVisible = ref(false);
+    const addVisible = ref(false); // 对话框
+    const loading = ref(false); // 加载层
 
     const prefixArray = reactive([]);
     const bucketNameOptions = reactive([]);
@@ -168,6 +170,7 @@ export default defineComponent({
 
     // 获取桶名列表
     const getBucketName = async () => {
+      loading.value = true;
       const response = await axiosRequest.get('/api/minio/getBucketName');
       response.data.map((item) => {
         bucketNameOptions.push({ label: item, value: item });
@@ -185,6 +188,7 @@ export default defineComponent({
       });
       tableData.length = 0;
       tableData.push(...response.data);
+      loading.value = false;
     };
 
     // 选择文件或文件夹
@@ -239,6 +243,7 @@ export default defineComponent({
 
     // 请求到后端接口,上传对应项目代码
     const uploadServiceFile = async (val) => {
+      loading.value = true;
       const form = new FormData();
       const newFilePath = prefixArray.join('/') + '/';
 
@@ -301,6 +306,7 @@ export default defineComponent({
       headers,
       fileList,
       addVisible,
+      loading,
 
       changeBucket,
       getObjectList,
@@ -363,7 +369,7 @@ export default defineComponent({
 :deep(.el-table .warning-row) {
   --el-table-tr-bg-color: var(--el-color-warning-light-9);
 }
-:deep(.el-table .success-row ){
+:deep(.el-table .success-row) {
   --el-table-tr-bg-color: var(--el-color-success-light-9);
 }
 </style>
