@@ -98,8 +98,16 @@ export default defineComponent({
           },
         ],
       },
+      {
+        icon: 'icon-shuju',
+        index: '/storageView',
+        title: '数据存储',
+        subs: [
+          { icon: 'icon-shuju', index: '/minioView', title: '对象存储' },
+          { icon: 'icon-shuju', index: '/fileTransmit', title: '文件传输' },
+        ],
+      },
       { icon: 'icon-liebiao-2', index: '/markdownShow', title: '文档展示' },
-      { icon: 'icon-shuju', index: '/minioView', title: '对象存储' },
     ]);
     // 获取侧边栏展示状态
     const siderCollapse = computed(() => {

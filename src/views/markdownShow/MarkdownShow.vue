@@ -7,10 +7,9 @@
         :show-all-levels="false"
       />
     </div>
-      <el-scrollbar height="590px">
-
-    <v-md-preview :text="file_content" class="md-view"></v-md-preview>
-      </el-scrollbar>
+    <el-scrollbar height="590px">
+      <v-md-preview :text="file_content" class="md-view"></v-md-preview>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -84,7 +83,7 @@ const getFileContent = async (pathValue: string[]) => {
 </script>
 
 <style scoped>
-.vuepress-markdown-body{
+.vuepress-markdown-body {
   height: 580px;
 }
 .article-cascader {

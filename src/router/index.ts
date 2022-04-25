@@ -77,7 +77,16 @@ const routes: Array<RouteRecordRaw> = [
           title:'对象存储'
         },
         component: () =>
-          import(/* webpackChunkName: "minioView" */ '../views/minioView/MinioView.vue'),
+          import(/* webpackChunkName: "minioView" */ '../views/storageView/MinioView.vue'),
+      },
+      {
+        path: '/fileTransmit',
+        name: 'fileTransmit',
+        meta: {
+          title:'文件传输'
+        },
+        component: () =>
+          import(/* webpackChunkName: "minioView" */ '../views/storageView/FileTransmit.vue'),
       },
     ],
   },
