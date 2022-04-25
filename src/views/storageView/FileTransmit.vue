@@ -13,12 +13,18 @@
     </div>
 
     <!-- 上传 -->
-    <el-card class="box-card">
+    <el-card class="upload-box-card">
+      <FolderBrowser @get-folder="getFolder" />
       <el-upload
-        class="upload-demo"
+        class="upload-file"
         drag
-        action="https://jsonplaceholder.typicode.com/posts/"
-        multiple
+        action="upload"
+        :headers="headers"
+        :limit="1"
+        :file-list="fileList"
+        :on-change="fileChange"
+        :http-request="uploadFile"
+        auto-upload
       >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
 
@@ -37,12 +43,26 @@
 
 <script setup>
 import axiosRequest from '@/utils/axiosRequest';
+import FolderBrowser from '@/components/FolderBrowser.vue';
 import { ElMessage } from 'element-plus';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 
 const rootPath = './uploads'; // 文档存放根目录
 const filePath = ref('');
 const fileName = ref('');
+const uploadFolderPath = ref('');
+const fileList = reactive([]);
+
+// 跨域访问请求头
+const headers = {
+  authorization: 'authorization-text',
+  'Access-Control-Allow-Origin': '*',
+};
+
+// 上传文件后添加到缓存
+const fileChange = (file) => {
+  fileList.push(file.raw);
+};
 
 const pathProps = {
   lazy: true,
@@ -124,6 +144,36 @@ const downloadFile = async () => {
     return;
   }
 };
+
+// 请求到后端接口,上传对应项目代码
+const uploadFile = async (val) => {
+  if (!uploadFolderPath.value) {
+    ElMessage.error('请选择上传路径');
+    fileList.length = 0;
+    return;
+  }
+  const form = new FormData();
+  form.append('file', val.file);
+  form.append('uploadFolderPath', '' + uploadFolderPath.value);
+  form.append('uploadFolderPath', '' + uploadFolderPath.value);
+  
+
+  const response = await axiosRequest.post('/api/file/uploadFile', form);
+  if (response.status !== 200) {
+    console.log(response);
+    ElMessage.error('上传失败');
+    fileList.length = 0;
+    return;
+  }
+  ElMessage.success('上传成功');
+  fileList.length = 0;
+};
+
+// 获取子组件传入路由
+const getFolder = (value) => {
+  uploadFolderPath.value = value;
+  console.log('uploadFolderPath.value', uploadFolderPath.value);
+};
 </script>
 
 <style scoped>
@@ -138,5 +188,13 @@ const downloadFile = async () => {
 }
 .download-button {
   margin-top: 15px;
+}
+
+:deep(.upload-box-card .el-card__body) {
+  /* width: 100%; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 </style>
