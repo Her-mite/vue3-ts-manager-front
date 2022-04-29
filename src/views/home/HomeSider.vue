@@ -108,6 +108,7 @@ export default defineComponent({
         ],
       },
       { icon: 'icon-liebiao-2', index: '/markdownShow', title: '文档展示' },
+      { icon: 'icon-liebiao-3', index: '/dragableShow', title: '拖拽待办' },
     ]);
     // 获取侧边栏展示状态
     const siderCollapse = computed(() => {

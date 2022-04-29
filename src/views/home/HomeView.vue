@@ -9,11 +9,13 @@
     <div class="content-box" :class="{ 'content-collapse': siderCollapse }">
       <home-tag></home-tag>
       <div class="content">
-        <router-view v-slot="{ Component }">
-          <keep-alive>
-            <component :is="Component" />
-          </keep-alive>
-        </router-view>
+        <el-scrollbar height="630px">
+          <router-view v-slot="{ Component }">
+            <keep-alive>
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
+        </el-scrollbar>
       </div>
     </div>
   </div>
@@ -49,7 +51,7 @@ export default defineComponent({
   right: 0;
   top: 55px;
   bottom: 0;
-  padding-bottom: 30px;
+  padding-bottom: 10px;
   -webkit-transition: left 0.3s ease-in-out;
   transition: left 0.3s ease-in-out;
 }

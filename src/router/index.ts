@@ -29,16 +29,16 @@ const routes: Array<RouteRecordRaw> = [
         path: '/overview',
         name: 'overview',
         meta: {
-          title:'概览'
+          title: '概览'
         },
-        component: ()=>
+        component: () =>
           import( /* webpackChunkName: "OverviewIndex" */ '../views/overview/OverviewIndex.vue'),
       },
       {
         path: '/studyWebsite',
         name: 'studyWebsite',
         meta: {
-          title:'学习网站'
+          title: '学习网站'
         },
         component: () =>
           import(/* webpackChunkName: "StudyWebsite" */ '../views/commonWebsite/StudyWebsite.vue'),
@@ -47,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/entertainmentWebsite',
         name: 'entertainmentWebsite',
         meta: {
-          title:'休闲娱乐'
+          title: '休闲娱乐'
         },
         component: () =>
           import(/* webpackChunkName: "EntertainmentWebsite" */ '../views/commonWebsite/EntertainmentWebsite.vue'),
@@ -56,25 +56,16 @@ const routes: Array<RouteRecordRaw> = [
         path: '/utilsWebsite',
         name: 'utilsWebsite',
         meta: {
-          title:'常用工具'
+          title: '常用工具'
         },
         component: () =>
           import(/* webpackChunkName: "UtilsWebsite" */ '../views/commonWebsite/UtilsWebsite.vue'),
       },
       {
-        path: '/markdownShow',
-        name: 'markdownShow',
-        meta: {
-          title:'文档展示'
-        },
-        component: () =>
-          import(/* webpackChunkName: "markdownShow" */ '../views/markdownShow/MarkdownShow.vue'),
-      },
-      {
         path: '/minioView',
         name: 'minioView',
         meta: {
-          title:'对象存储'
+          title: '对象存储'
         },
         component: () =>
           import(/* webpackChunkName: "minioView" */ '../views/storageView/MinioView.vue'),
@@ -83,10 +74,28 @@ const routes: Array<RouteRecordRaw> = [
         path: '/fileTransmit',
         name: 'fileTransmit',
         meta: {
-          title:'文件传输'
+          title: '文件传输'
         },
         component: () =>
           import(/* webpackChunkName: "minioView" */ '../views/storageView/FileTransmit.vue'),
+      },
+      {
+        path: '/markdownShow',
+        name: 'markdownShow',
+        meta: {
+          title: '文档展示'
+        },
+        component: () =>
+          import(/* webpackChunkName: "markdownShow" */ '../views/markdownShow/MarkdownShow.vue'),
+      },
+      {
+        path: '/dragableShow',
+        name: 'dragableShow',
+        meta: {
+          title: '拖拽待办'
+        },
+        component: () =>
+          import(/* webpackChunkName: "dragableShow" */ '../views/dragableShow/DragableShow.vue'),
       },
     ],
   },
@@ -101,17 +110,17 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = '秘密花园';
   const user_name = getCookie('user_name');
-  
+
   // 如果没有登录先去登录
   if (!user_name && to.path !== '/login') {
-      next('/login');
+    next('/login');
   } else if (to.meta.permission) {
-      // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
-      user_name === 'admin'
-          ? next()
-          : next('/403');
+    // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
+    user_name === 'admin'
+      ? next()
+      : next('/403');
   } else {
-      next();
+    next();
   }
 });
 
