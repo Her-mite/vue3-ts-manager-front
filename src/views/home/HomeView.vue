@@ -61,7 +61,7 @@ export default defineComponent({
 
 .content {
   width: auto;
-  padding: 0px;
+  padding: 10px;
   box-sizing: border-box;
   margin-top: 10px;
 }

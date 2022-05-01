@@ -347,6 +347,7 @@ export default defineComponent({
   flex-direction: row;
   align-items: center;
   width: 80%;
+  padding-left: 10px;
 }
 .addButton {
   margin-right: 20px;

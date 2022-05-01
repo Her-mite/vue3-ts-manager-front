@@ -86,7 +86,7 @@ const routes: Array<RouteRecordRaw> = [
           title: '文档展示'
         },
         component: () =>
-          import(/* webpackChunkName: "markdownShow" */ '../views/markdownShow/MarkdownShow.vue'),
+          import(/* webpackChunkName: "markdownShow" */ '../views/storageView/MarkdownShow.vue'),
       },
       {
         path: '/dragableShow',
