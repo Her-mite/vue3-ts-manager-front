@@ -198,7 +198,6 @@ export default defineComponent({
       // 新增数据
       if (isInsert) {
         data.dataJson['data'].push(matterList);
-        console.log('dataJosn', data.dataJson);
         const dataString = JSON.stringify(data.dataJson);
         const response = await axiosRequest.post('/api/file/writeFile', {
           dataString,
@@ -219,10 +218,8 @@ export default defineComponent({
           }
           return item;
         });
-        console.log('modifyData', modifyData);
 
         data.dataJson['data'] = modifyData;
-        console.log('data', data.dataJson);
 
         const dataString = JSON.stringify(data.dataJson);
         const response = await axiosRequest.post('/api/file/writeFile', {
@@ -250,7 +247,6 @@ export default defineComponent({
 
     // 新增代办项目
     const appendItemFunc = () => {
-      console.log('data', data.appendItem);
       if (data.listDate === '') {
         ElMessage.error('请选择对应日期');
         return;
