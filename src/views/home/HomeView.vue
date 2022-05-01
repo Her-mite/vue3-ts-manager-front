@@ -9,7 +9,7 @@
     <div class="content-box" :class="{ 'content-collapse': siderCollapse }">
       <home-tag></home-tag>
       <div class="content">
-        <el-scrollbar height="630px">
+        <el-scrollbar height="650px">
           <router-view v-slot="{ Component }">
             <keep-alive>
               <component :is="Component" />
@@ -61,7 +61,7 @@ export default defineComponent({
 
 .content {
   width: auto;
-  padding: 10px;
+  padding: 0px;
   box-sizing: border-box;
   margin-top: 10px;
 }

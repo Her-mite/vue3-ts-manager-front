@@ -17,3 +17,14 @@ export interface tagItem {
     title: unknown,
     path: string,
 }
+
+// todolist数据类型
+export interface draggableItem {
+    date: string,
+    list: {
+        optionalList: string[];
+        todoList: string[];
+        completeList: string[];
+    }
+}
+
