@@ -104,11 +104,16 @@ export default defineComponent({
         title: '数据存储',
         subs: [
           { icon: 'icon-shuju', index: '/minioView', title: '对象存储' },
-          { icon: 'icon-tianjiarenyuan-1', index: '/fileTransmit', title: '文件传输' },
+          {
+            icon: 'icon-tianjiarenyuan-1',
+            index: '/fileTransmit',
+            title: '文件传输',
+          },
           { icon: 'icon-liebiao-2', index: '/markdownShow', title: '文档展示' },
         ],
       },
       { icon: 'icon-liebiao-3', index: '/dragableShow', title: '拖拽待办' },
+      { icon: 'icon-zhongxin', index: '/execScript', title: '执行脚本' },
     ]);
     // 获取侧边栏展示状态
     const siderCollapse = computed(() => {

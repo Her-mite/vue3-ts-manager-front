@@ -97,6 +97,15 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import(/* webpackChunkName: "dragableShow" */ '../views/dragableShow/DragableShow.vue'),
       },
+      {
+        path: '/execScript',
+        name: 'execScript',
+        meta: {
+          title: '执行脚本'
+        },
+        component: () =>
+          import(/* webpackChunkName: "dragableShow" */ '../views/scriptView/ExecScript.vue'),
+      },
     ],
   },
 ];

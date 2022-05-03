@@ -183,7 +183,7 @@ const getFolder = (value) => {
   align-items: center;
 }
 .box-card {
-  width: 100%;
+  width: 99%;
   margin-bottom: 20px;
 }
 .download-button {
@@ -191,7 +191,7 @@ const getFolder = (value) => {
 }
 
 :deep(.upload-box-card .el-card__body) {
-  /* width: 100%; */
+  /* width: 99%; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;

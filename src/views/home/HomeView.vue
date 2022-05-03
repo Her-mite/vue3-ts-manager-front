@@ -9,7 +9,7 @@
     <div class="content-box" :class="{ 'content-collapse': siderCollapse }">
       <home-tag></home-tag>
       <div class="content">
-        <el-scrollbar height="650px">
+        <el-scrollbar height="640px">
           <router-view v-slot="{ Component }">
             <keep-alive>
               <component :is="Component" />
