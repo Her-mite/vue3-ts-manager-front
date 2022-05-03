@@ -20,9 +20,10 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:7071',
+        'Access-Control-Allow-Origin': '*',
         changeOrigin: true,
-        ws: false
-      },
+        ws: false,
+      }
     },
     // client: {
     //   webSocketURL: 'ws://0.0.0.0:8081/ws',

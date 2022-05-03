@@ -104,7 +104,16 @@ const routes: Array<RouteRecordRaw> = [
           title: '执行脚本'
         },
         component: () =>
-          import(/* webpackChunkName: "dragableShow" */ '../views/scriptView/ExecScript.vue'),
+          import(/* webpackChunkName: "execScript" */ '../views/scriptView/ExecScript.vue'),
+      },
+      {
+        path: '/HolyBible',
+        name: 'HolyBible',
+        meta: {
+          title: 'HolyBible'
+        },
+        component: () =>
+          import(/* webpackChunkName: "HolyBible" */ '../views/holyBible/HolyBible.vue'),
       },
     ],
   },

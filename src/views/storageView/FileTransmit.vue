@@ -155,7 +155,7 @@ const uploadFile = async (val) => {
   const form = new FormData();
   form.append('file', val.file);
   form.append('uploadFolderPath', '' + uploadFolderPath.value);
-  form.append('uploadFolderPath', '' + uploadFolderPath.value);
+  form.append('uploadFolderPath1', '' + 'temp');
   
 
   const response = await axiosRequest.post('/api/file/uploadFile', form);

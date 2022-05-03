@@ -33,3 +33,6 @@ npm config set registry https://registry.npm.taobao.org
 
 ### iconfont
 https://www.iconfont.cn/
+
+### draggable
+npm i vuedraggable@next
