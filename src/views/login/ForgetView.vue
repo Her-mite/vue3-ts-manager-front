@@ -1,8 +1,8 @@
 <template>
   <div class="background-img">
-    <!-- 登录表单 -->
+    <!-- 注册表单 -->
     <div class="ms-login">
-      <div class="login-title">欢迎登录</div>
+      <div class="login-title">找回密码</div>
       <el-form
         ref="formRef"
         label-position="right"
@@ -12,45 +12,62 @@
         style="max-width: 460px"
         hide-required-asterisk
       >
-        <el-form-item prop="username" style="margin-right:50px;margin-top:20px">
-          <el-input v-model="loginFormData.username" placeholder="账号">
+        <el-form-item prop="username">
+          <el-input v-model="loginFormData.username" placeholder="请输入用户名">
             <template #prepend>
-              <el-icon>
-                <avatar />
-              </el-icon>
+              <el-icon><avatar /></el-icon>
             </template>
           </el-input>
         </el-form-item>
 
-        <el-form-item prop="password" style="margin-right:50px">
+        <el-form-item prop="password">
           <el-input
             v-model="loginFormData.password"
             type="password"
-            placeholder="密码"
-            @keyup.enter="submitForm(formRef)"
+            placeholder="请输入密码"
           >
             <template #prepend>
-              <el-icon>
-                <lock />
-              </el-icon>
+              <el-icon><lock /></el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item prop="check_password">
+          <el-input
+            v-model="loginFormData.check_password"
+            type="password"
+            placeholder="确认密码"
+            @keyup.enter="registerUser(formRef)"
+          >
+            <template #prepend>
+              <el-icon><lock /></el-icon>
             </template>
           </el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-checkbox v-model="needMemory" label="记住账号和密码" size="small" />
-        </el-form-item>
-        <div class="register-view">
-          <div class="forgetPasswd" @click="goForget">忘记密码</div>
-          <div class="gotoRegister" @click="goRegister">立即注册</div>
-        </div>
-        <el-form-item>
           <div class="button-item">
-            <el-button class="login-button" @click="submitForm(formRef)">登录</el-button>
+            <el-button type="primary" @click="registerUser(formRef)"
+              >立即找回</el-button
+            >
           </div>
         </el-form-item>
       </el-form>
     </div>
+    <!-- 注册成功提示 -->
+    <el-dialog
+      v-model="dialogVisible"
+      title="Tips"
+      width="30%"
+      center
+    >
+      <span>注册成功</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="router.push('/login');">去登录</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -59,16 +76,17 @@ import { reactive, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import { validate_password } from '@/utils/index';
+import { register_user } from '@/utils/index';
 import { signResult } from '@/utils/interface';
-import { setCookie } from '@/utils/cookie';
+import { FILE_ERROR } from '@/constants/message';
 
 const formRef = ref<FormInstance>();
-const router = useRouter();
-
+const router = useRouter();let dialogVisible = ref<boolean>(false);
+// 注册表单数据
 const loginFormData = reactive({
   username: '',
   password: '',
+  check_password: '',
 });
 
 // 密码自定义校验方式
@@ -79,6 +97,19 @@ const validatePassword = (
 ) => {
   if (value.length < 6 || value.length > 20) {
     callback(new Error('Length should be 6 to 20'));
+  } else {
+    callback();
+  }
+};
+
+// 两次密码需要一致
+const checkPassword = (
+  rule: object,
+  value: string,
+  callback: (arg1?: Error) => void
+) => {
+  if (value !== loginFormData.password) {
+    callback(new Error('两次密码不一致'));
   } else {
     callback();
   }
@@ -108,42 +139,42 @@ const rules = reactive({
     // 自定义格式校验
     { validator: validatePassword, trigger: 'blur' },
   ],
+  check_password: [
+    {
+      required: true,
+      message: 'Please input password',
+      trigger: 'blur',
+    },
+    // 自定义格式校验
+    { validator: checkPassword, trigger: 'blur' },
+  ],
 });
 
-// 登录提交
-const submitForm = (formEl: FormInstance | undefined) => {
+// 用户注册
+const registerUser = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
-      // 校验通过 验证用户密码
-      let loginResult: signResult = validate_password(
+      // 表单校验通过
+      const registerResult: signResult = register_user(
         loginFormData.username,
         loginFormData.password
       );
-      if (loginResult.isSuccess) {
-        ElMessage.success('登录成功');
-        // sessionStorage.setItem('ms_username', loginFormData.username);
-        setCookie('user_name', loginFormData.username);        
-        router.push('/home');
+      if (registerResult.isSuccess) {
+        ElMessage.success('注册成功');
+        dialogVisible.value = true;
       } else {
-        ElMessage.error(loginResult.errorMessage);
-        formEl.resetFields('password');
+        // 注册失败提示，
+        ElMessage.error(FILE_ERROR.FILE_WRITE_ERROR);
+        formEl.resetFields();
         return;
       }
     }
   });
 };
-
-// 注册
-const goRegister = () => {
-  router.push('/register');
-};
-const goForget = () => {
-  router.push('/forget');
-};
 </script>
 
-<style>
+<style scoped>
 .background-img {
   position: fixed;
   top: 0;
@@ -151,7 +182,7 @@ const goForget = () => {
   width: 100%;
   height: 100%;
   z-index: -10;
-  background-image: url(@/assets/img/login-img.jpg);
+  background-image: url(@/assets/img/register-img.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -178,7 +209,7 @@ const goForget = () => {
 }
 /* 表单 */
 .el-form--label-right {
-  padding: 0;
+  padding: 30px 40px 0 0;
 }
 
 .el-form-item__content {
@@ -200,50 +231,25 @@ const goForget = () => {
   background-color: #ffffff00 !important;
 }
 /* 输入框 */
-.ms-login .el-input__inner {
-  background: none;
+.el-input__inner {
+  background: #00000080;
   border: none;
-  color: #fff;
 }
 /* 注册按钮 */
 .register-button {
   margin-left: 45px !important;
 }
 .button-item {
-  width:350px;
+  width: 300px;
   flex-direction: row;
   flex: 1;
-  justify-content: space-around;
+  justify-content: center;
   margin-bottom: -10px;
-  margin-left: -30px;
-  margin-top: 20px;
 }
-
-.login-button {
-  width: 180px;
-  height: 40px !important;
-  border-radius: 50px !important;
-  background-color: #bbc530 !important;
-}
-
-.register-view {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-/* 忘记密码 */
-.forgetPasswd {
-  font-size: 14px;
-  color: #d4e211;
-  cursor: pointer;
-  text-decoration: underline;
-}
-/* 立即注册 */
-.gotoRegister {
-  font-size: 14px;
-  color: #d4e211;
-  cursor: pointer;
-  text-decoration: underline;
+.el-button--primary {
+  --el-button-bg-color: #00000080 !important;
+  --el-button-border-color: #2d2928 !important;
+  --el-button-hover-bg-color: #2c3e50 !important;
+  --el-button-hover-border-color: #6e453a !important;
 }
 </style>

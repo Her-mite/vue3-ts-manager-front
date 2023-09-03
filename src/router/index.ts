@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '@/views/home/HomeView.vue';
 import LoginView from '@/views/login/LoginView.vue';
 import RegisterView from '@/views/login/RegisterView.vue';
+import ForgetView from '@/views/login/ForgetView.vue';
 import { getCookie } from '@/utils/cookie';
 
 const routes: Array<RouteRecordRaw> = [
@@ -19,6 +20,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'register',
     component: RegisterView
   },
+  {
+    path: '/forget',
+    name: 'forget',
+    component: ForgetView
+  },
+  
   {
     path: '/home',
     name: 'home',
